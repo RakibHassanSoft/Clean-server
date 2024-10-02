@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/CareerObjective',authMiddleware, createCareerObjective);
 
 // Get a career objective by userId and templateId
-router.get('/CareerObjective/:id/:templateId',authMiddleware, getCareerObjectiveById);
+router.get('/CareerObjective/:id/:templateId', getCareerObjectiveById);
 
 // Update a career objective by userId and templateId
 router.put('/CareerObjective/:id/:templateId',authMiddleware, updateCareerObjective);
