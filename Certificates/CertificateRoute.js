@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/certificates', createCertificate);
 
 // Get a specific certificate by userId and templateId
-router.get('/certificates/:id/:templateId/:certificateId', getCertificateById);
+router.get('/certificates/:id/:templateId/', getCertificateById);
 
 // Update a certificate by userId and templateId
 router.put('/certificates/:id/:templateId', updateCertificate);
