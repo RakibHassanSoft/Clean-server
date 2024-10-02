@@ -7,7 +7,7 @@ const router = express.Router();
  router.post("/CreateEducation",authMiddleware, CreateEducation)
 
 // Get route for fetching all educations of a specific user and template
-router.get("/educations/:id/:templateId", authMiddleware, getEducations);
+router.get("/educations/:id/:templateId", getEducations);
 
 // Update route for updating a specific education entry by userId and templateId
 router.patch("/educations/:id/:templateId", authMiddleware, updateEducation);
