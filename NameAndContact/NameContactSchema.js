@@ -19,10 +19,12 @@ const nameContactSchema = new mongoose.Schema({
   },
   userId: {
     type: String,
+    required: true,
     
   },
   templateId: {
     type: String,
+    required: true,
   },
 }, { timestamps: true });
 

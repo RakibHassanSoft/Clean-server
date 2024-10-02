@@ -3,10 +3,12 @@ const mongoose = require("mongoose");
 const EducationSchema = new mongoose.Schema({
     userId: {
         type: String,
+        required: true,
        
       },
     templateId: {
         type: String,
+        required: true,
        
       },
       education: [
