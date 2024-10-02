@@ -13,8 +13,7 @@ const SkillRoute=require('./Skills/skillsRoute')
 const SummaryRoute=require('./Summary/SummaryRoute')
 const TitleRoute=require('./Title/TitleRoute')
 const certificatesRoutes = require("./Certificates/CertificateRoute")
-const connectDB=require("./Config/dbConfig");
-const authMiddleware = require("./Middelware/Middleware");
+const connectDB=require("./Config/dbConfig")
  
 require("dotenv").config();
 connectDB()
@@ -28,32 +27,40 @@ app.get("/", (req, res) => {
   res.send("hello Developer");
 });
 
-// user route
-app.use("/api/users",UserRoute )
+// Name
+app.use("/api/name", NameContactRoute);
+// Career Objective
+app.use("/api",CareerObjectiveRoute);
+// skills
+app.use("/api", SkillRoute);
+// Projects 
+app.use("/api", ProjectsRoute);
 // education
 app.use("/api/education",educationRoute )
 // language
 app.use("/api/language",LanguageRoute )
 // experience
 app.use("/api/Experience",ExperienceRoute )
+// Certificate
+app.use('/api', certificatesRoutes); 
+
+
+
+// user route
+app.use("/api/users",UserRoute )
+
+
+
 
 // Awards 
 app.use("/api", AwardRoute )
-// Career Objective
-app.use("/api",CareerObjectiveRoute);
 
-// Name
-app.use("/api/name",authMiddleware, NameContactRoute);
-// Projects 
-app.use("/api", ProjectsRoute);
-// skills
-app.use("/api", SkillRoute);
+
+
 // Summary
 app.use("/api", SummaryRoute);
 // title
 app.use("/api", TitleRoute);
-// Certificate
-app.use('/api', certificatesRoutes); 
 
 
 // Server listening

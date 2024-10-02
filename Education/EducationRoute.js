@@ -5,11 +5,11 @@ const authMiddleware = require("../Middelware/Middleware");
 const router = express.Router();
 //      post route
  router.post("/CreateEducation",authMiddleware, CreateEducation)
-//     get route
- router.get("/getEducations",authMiddleware, getEducations)
-//  update route
-router.patch("/updateEducation/:id",updateEducation)
-//  delete route
-router. delete("/deleteEducation/:id",deleteEducation)
+
+// Update route for updating a specific education entry by userId and templateId
+router.patch("/educations/:id/:templateId", authMiddleware, updateEducation);
+
+// Delete route for deleting an education entry by userId and templateId
+router.delete("/educations/:id/:templateId", authMiddleware, deleteEducation);
 
  module.exports=router
