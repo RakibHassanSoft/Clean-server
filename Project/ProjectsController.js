@@ -5,18 +5,33 @@ exports.createProject = async (req, res) => {
   try {
     const { title, description, userId, templateId } = req.body;
 
-    const newProject = new Projects({
-      projects: [{ title, description }],
-      userId,
-      templateId,
-    });
+    // Check if a project already exists for the given userId and templateId
+    let existingProject = await Projects.findOne({ userId, templateId });
 
-    await newProject.save();
-    res.status(201).json({ message: 'Project created successfully', project: newProject });
+    if (existingProject) {
+
+      return res.status(200).json({
+        message: ' existing projects'
+      });
+    } else {
+      // If no project exists, create a new one
+      const newProject = new Projects({
+        projects: [{ title, description }],
+        userId,
+        templateId
+      });
+
+      await newProject.save();
+      return res.status(201).json({
+        message: 'New project created successfully',
+        project: newProject
+      });
+    }
   } catch (error) {
-    res.status(500).json({ message: 'Error creating project', error });
+    res.status(500).json({ message: 'Error creating or updating project', error });
   }
 };
+
 
 // Get all projects for a specific user and template
 exports.getAllProjects = async (req, res) => {

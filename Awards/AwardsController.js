@@ -3,19 +3,37 @@ const Award = require("./AwardsSchema");
 // Create a new award
 exports.createAward = async (req, res) => {
   try {
-    const { awards, userId, templateId } = req.body; // Expecting awards as an array
+    const { awards, userId, templateId } = req.body;
+
+    // Validate that 'awards' is an array
     if (!awards || !Array.isArray(awards)) {
       return res.status(400).json({ message: 'Awards must be an array' });
     }
+
+    // Validate that userId and templateId are provided
+    if (!userId || !templateId) {
+      return res.status(400).json({ message: 'User ID and Template ID are required' });
+    }
+
+    // Check if an award with the same userId and templateId already exists
+    const existingAward = await Award.findOne({ userId, templateId });
+    if (existingAward) {
+      return res.status(409).json({ message: 'Award with this User ID and Template ID already exists' });
+    }
+
+    // Create a new award entry in the database
     const newAward = new Award({ awards, userId, templateId });
     await newAward.save();
+
+    // Respond with success and the newly created award
     res.status(201).json({ message: 'Award created successfully', award: newAward });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating award', error });
+    // Respond with error in case of failure
+    res.status(500).json({ message: 'Error creating award', error: error.message });
   }
 };
 
-// Get all awards for a user and template
+// Get a awards for a user and that template
 exports.getAllAwards = async (req, res) => {
   try {
     const { id, templateId } = req.params; // Get userId and templateId from request parameters
@@ -32,21 +50,6 @@ exports.getAllAwards = async (req, res) => {
   }
 };
 
-// Get all awards by userId and templateId
-exports.getAllAwards = async (req, res) => {
-  try {
-    const { id, templateId } = req.params; // Get userId and templateId from request parameters
-    const awards = await Award.find({ userId: id, templateId: templateId }).populate('userId', 'name email');
-
-    if (awards.length === 0) {
-      return res.status(404).json({ message: 'No awards found for this user and template.' });
-    }
-
-    return res.status(200).json(awards);
-  } catch (error) {
-    return res.status(500).json({ message: 'Error fetching awards', error: error.message });
-  }
-};
 
 // Get a specific award by userId and templateId
 exports.getAwardById = async (req, res) => {

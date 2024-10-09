@@ -10,16 +10,13 @@ const {
 const router = express.Router();
 
 // Create a new name contact entry
-router.post('/name-contact', createNameContact);
-
-// Get all name contact entries
-router.get('/all-name-contact/:id/:templateId', getAllNameContacts);
+router.post('/NameAndContact', createNameContact);
 
 // Get a specific name contact entry by ID
-router.get('/name-contact/:id/:templateId', getNameContactById);
+router.get('/NameAndContact/:id/:templateId', getNameContactById);
 
 // Update a name contact entry by ID
-router.put('/name-contact/:id/:templateId', updateNameContact);
+router.put('/NameAndContact/:id/:templateId', updateNameContact);
 
 // Delete a name contact entry by ID
 router.delete('/name-contact/:id:templateId', deleteNameContact);

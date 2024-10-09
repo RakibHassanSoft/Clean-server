@@ -5,18 +5,44 @@ const NameContact = require('./NameContactSchema');
 exports.createNameContact = async (req, res) => {
   try {
     const { name, contact, userId, templateId } = req.body;
-  
-  console.log(req.body)
+    console.log(req.body);
+
     if (!contact || typeof contact !== 'object') {
       return res.status(400).json({ message: 'Contact information must be an object' });
     }
 
+    // Check if there is already a NameContact entry for the given userId and templateId
+    const existingContact = await NameContact.findOne({ userId, templateId });
+
+    if (existingContact) {
+      return res.status(400).json({ message: 'Contact already exists for this user and template' });
+    }
+
+    // Create a new NameContact entry if none exists
     const newNameContact = new NameContact({ name, contact, userId, templateId });
     await newNameContact.save();
 
     res.status(201).json({ message: 'Name contact created successfully', nameContact: newNameContact });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating name contact', error });
+    res.status(500).json({ message: 'Error creating name contact', error: error.message });
+  }
+};
+
+// Get a specific name contact entry by userId and templateId
+exports.getNameContactById = async (req, res) => {
+  try {
+    const { id, templateId } = req.params; // Get userId and templateId from params
+    console.log(templateId)
+    // Find the document by both userId and templateId
+    const nameContact = await NameContact.findOne({ userId: id, templateId });
+  
+    if (!nameContact) {
+      return res.status(404).json({ message: 'Name contact not found' });
+    }
+
+    res.status(200).json(nameContact);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching name contact', error: error.message });
   }
 };
 
@@ -26,7 +52,7 @@ exports.getAllNameContacts = async (req, res) => {
     const { id, templateId } = req.params; // Get userId and templateId from the request parameters
 
     // Find all name contacts matching the userId and templateId
-    const nameContacts = await NameContact.find({ userId: id, templateId });
+    const nameContacts = await NameContact.findone({ userId: id, templateId });
 
     if (!nameContacts || nameContacts.length === 0) {
       return res.status(404).json({ message: 'No name contacts found for this user and template' });
@@ -38,23 +64,7 @@ exports.getAllNameContacts = async (req, res) => {
   }
 };
 
-// Get a specific name contact entry by userId and templateId
-exports.getNameContactById = async (req, res) => {
-  try {
-    const { id, templateId } = req.params; // Get both userId and templateId from the request parameters
 
-    // Use findOne to search by both userId and templateId
-    const nameContact = await NameContact.findOne({ userId: id, templateId: templateId });
-
-    if (!nameContact) {
-      return res.status(404).json({ message: 'Name contact not found' });
-    }
-
-    res.status(200).json(nameContact);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching name contact', error });
-  }
-};
 
 
 // Update a name contact entry by userId and templateId

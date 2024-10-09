@@ -3,12 +3,21 @@ const LanguagesSchema = require("./Languageschema");
 exports.createLanguage = async (req, res) => {
   try {
     const { userId, templateId, languages } = req.body;
-console.log(req.body);
+    console.log(req.body);
+
     // Validate that languages are provided
     if (!languages || !Array.isArray(languages) || languages.length === 0) {
       return res
         .status(400)
         .json({ message: "Languages are required and should be an array." });
+    }
+
+    // Check if a record with the same userId and templateId exists
+    const existingEntry = await LanguagesSchema.findOne({ userId, templateId });
+    if (existingEntry) {
+      return res
+        .status(409)
+        .json({ message: "Entry already exists for the provided userId and templateId." });
     }
 
     // Create a new language entry
@@ -21,10 +30,9 @@ console.log(req.body);
     await newLanguages.save();
     res.status(201).json(newLanguages);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
-
 // Get languages data by userId and templateId
 exports.getLanguagesByUserId = async (req, res) => {
   try {

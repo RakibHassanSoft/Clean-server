@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require('cors');
-const UserRoute=require('./User/UserRoute')
 const educationRoute=require('./Education/EducationRoute')
 const LanguageRoute=require("./Languages/LanguageRoute")
  const ExperienceRoute=require("./Experience/ExperienceRoute")
@@ -12,6 +11,7 @@ const ProjectsRoute=require('./Project/ProjectsRoute')
 const SkillRoute=require('./Skills/skillsRoute')
 const SummaryRoute=require('./Summary/SummaryRoute')
 const TitleRoute=require('./Title/TitleRoute')
+const JobPosting=require('./JobPosting/jobPOstingRoute')
 const certificatesRoutes = require("./Certificates/CertificateRoute")
 const connectDB=require("./Config/dbConfig")
  
@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 });
 
 // Name
-app.use("/api/name", NameContactRoute);
+app.use("/api", NameContactRoute);
 // Career Objective
 app.use("/api",CareerObjectiveRoute);
 // skills
@@ -36,18 +36,17 @@ app.use("/api", SkillRoute);
 // Projects 
 app.use("/api", ProjectsRoute);
 // education
-app.use("/api/education",educationRoute )
+app.use("/api",educationRoute )
 // language
-app.use("/api/language",LanguageRoute )
+app.use("/api",LanguageRoute )
 // experience
-app.use("/api/Experience",ExperienceRoute )
+app.use("/api",ExperienceRoute )
 // Certificate
 app.use('/api', certificatesRoutes); 
+//for job posting
+app.use('/api', JobPosting); 
 
 
-
-// user route
-app.use("/api/users",UserRoute )
 
 
 
@@ -68,3 +67,8 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+
+
+//// userId:  k7Fs6Hfy9CWjLe2h6A42H2DAZxg2

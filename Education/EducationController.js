@@ -3,20 +3,27 @@ const EducationSchema = require("./EducationSchema");
 // Create new education record
 
 exports.CreateEducation = async (req, res) => {
-  // console.log(req.body)
   try {
     const { userId, templateId, education } = req.body;
-    console.log(req.body);
+
+    // Check if the record with the same userId and templateId already exists
+    const existingEducation = await EducationSchema.findOne({ userId, templateId });
+
+    if (existingEducation) {
+      return res.status(400).json({ message: 'Education entry already exists for this user and template.' });
+    }
+
+    // Create a new education entry if it doesn't exist
     const newEducation = new EducationSchema({
       userId,
       templateId,
       education,
     });
-    console.log(newEducation);
+
     await newEducation.save();
-    res.status(200).json(newEducation);
+    res.status(201).json({ message: 'Education created successfully', education: newEducation });
   } catch (error) {
-    return res.status(403).json({ error: error.message });
+    return res.status(500).json({ message: 'Error creating education', error: error.message });
   }
 };
 
@@ -66,6 +73,8 @@ exports.updateEducation = async (req, res) => {
     return res.status(500).json({ message: "Error updating education record", error: error.message });
   }
 };
+
+
 
 // Delete an education record by userId and templateId
 exports.deleteEducation = async (req, res) => {

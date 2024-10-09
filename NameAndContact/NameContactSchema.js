@@ -2,6 +2,15 @@ const { string } = require('joi');
 const mongoose = require('mongoose');
 
 const nameContactSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+    
+  },
+  templateId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
   },
@@ -16,16 +25,7 @@ const nameContactSchema = new mongoose.Schema({
     website: {
       type: String,
     },
-  },
-  userId: {
-    type: String,
-    required: true,
-    
-  },
-  templateId: {
-    type: String,
-    required: true,
-  },
+  }
 }, { timestamps: true });
 
 const NameContact = mongoose.model('NameContact', nameContactSchema);

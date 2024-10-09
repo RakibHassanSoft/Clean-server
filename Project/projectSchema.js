@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 
 const projectSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+  templateId: {
+    type: String,
+    required: true,
+  },
   projects: [
     {
       title: {
@@ -11,15 +19,7 @@ const projectSchema = new mongoose.Schema({
       },
     }
   ]
-  ,
-  userId: {
-    type: String,
-    required: true,
-  },
-  templateId: {
-    type: String,
-    required: true,
-  }
+  
 }, { timestamps: true });
 
 const Projects = mongoose.model('Projects', projectSchema);

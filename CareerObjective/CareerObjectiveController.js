@@ -1,26 +1,29 @@
 const CareerObjective = require("./careerObjectiveSchema");
 
+
 // Create a new career objective
 exports.createCareerObjective = async (req, res) => {
   try {
-    const { careerObjective, templateId, title } = req.body;
-    const newCareerObjective = new CareerObjective({ careerObjective, templateId, title });
+    const { careerObjective, templateId, title, userId } = req.body; // Make sure userId is included
+
+    // Check if an objective with the given userId and templateId already exists
+    const existingObjective = await CareerObjective.findOne({ userId, templateId });
+
+    if (existingObjective) {
+      return res.status(400).json({ message: 'Career Objective already exists for this user and template.' });
+    }
+
+    // Create and save the new career objective
+    const newCareerObjective = new CareerObjective({ careerObjective, templateId, title, userId });
     await newCareerObjective.save();
-    res.status(201).json({ message: 'Career Objective created successfully', careerObjective: newCareerObjective });
+    
+    return res.status(201).json({ message: 'Career Objective created successfully', careerObjective: newCareerObjective });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating Career Objective', error });
+    return res.status(500).json({ message: 'Error creating Career Objective', error: error.message });
   }
 };
 
-// Get all career objectives
-exports.getAllCareerObjectives = async (req, res) => {
-  try {
-    const careerObjectives = await CareerObjective.find();
-    res.status(200).json(careerObjectives);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching Career Objectives', error });
-  }
-};
+
 
 // Get a specific career objective by userId and templateId
 exports.getCareerObjectiveById = async (req, res) => {
@@ -78,5 +81,15 @@ exports.deleteCareerObjective = async (req, res) => {
     res.status(200).json({ message: 'Career Objective deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting Career Objective', error });
+  }
+};
+
+// Get career objectives
+exports.getAllCareerObjectives = async (req, res) => {
+  try {
+    const careerObjectives = await CareerObjective.find();
+    res.status(200).json(careerObjectives);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Career Objectives', error });
   }
 };

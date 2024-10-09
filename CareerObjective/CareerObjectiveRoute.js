@@ -4,15 +4,15 @@ const authMiddleware = require('../Middelware/Middleware');
 const router = express.Router();
 
 // Create a career objective
-router.post('/CareerObjective',authMiddleware, createCareerObjective);
+router.post('/CareerObjective', createCareerObjective);
 
 // Get a career objective by userId and templateId
 router.get('/CareerObjective/:id/:templateId', getCareerObjectiveById);
 
 // Update a career objective by userId and templateId
-router.put('/CareerObjective/:id/:templateId',authMiddleware, updateCareerObjective);
+router.put('/CareerObjective/:id/:templateId', updateCareerObjective);
 
 // Delete a career objective by userId and templateId
-router.delete('/CareerObjective/:id/:templateId',authMiddleware, deleteCareerObjective);
+router.delete('/CareerObjective/:id/:templateId', deleteCareerObjective);
 
 module.exports = router;

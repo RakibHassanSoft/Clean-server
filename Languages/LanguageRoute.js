@@ -8,14 +8,14 @@ const {
 
 const router = express.Router();
 //      post route
-router.post("/createLanguage", createLanguage);
+router.post("/Language", createLanguage);
 // Get languages data by userId and templateId
 
-router.get("/languages/:id/:templateId", getLanguagesByUserId);
+router.get("/Language/:id/:templateId", getLanguagesByUserId);
 // Update languages data for a user
-router.patch("/languages/:id/:templateId", updateLanguages);
+router.patch("/Language/:id/:templateId", updateLanguages);
 
 // Delete languages data for a user
-router.delete("/languages/:id/:templateId", deleteLanguages);
+router.delete("/Language/:id/:templateId", deleteLanguages);
 
 module.exports = router;

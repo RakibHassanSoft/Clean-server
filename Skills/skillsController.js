@@ -1,23 +1,32 @@
 const Skills = require('./skillsSchema');
 
 // Create a new skills entry
+// Create or update skills entry
 exports.createSkills = async (req, res) => {
   try {
     const { userId, templateId, skills } = req.body;
 
+    // Validate that skills are provided and are in an array
     if (!skills || !Array.isArray(skills)) {
       return res.status(400).json({ message: 'Skills must be an array' });
     }
 
+    // Check if there is already a skills entry for the given userId and templateId
+    const existingSkills = await Skills.findOne({ userId, templateId });
+
+    if (existingSkills) {
+      return res.status(400).json({ message: 'Skills entry already exists for this user and template' });
+    }
+
+    // If no existing entry, create a new skills entry
     const newSkills = new Skills({ userId, templateId, skills });
     await newSkills.save();
 
     res.status(201).json({ message: 'Skills created successfully', skills: newSkills });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating skills', error });
+    res.status(500).json({ message: 'Error creating skills', error: error.message });
   }
 };
-
 // Get all skills entries by userId and templateId
 exports.getAllSkills = async (req, res) => {
   try {

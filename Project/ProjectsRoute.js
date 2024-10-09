@@ -11,7 +11,7 @@ const authMiddleware = require('../Middelware/Middleware');
 const router = express.Router();
 
 // Create a new project
-router.post('/projects',authMiddleware, createProject);
+router.post('/projects', createProject);
 
 // Get a project by ID
 router.get('/projects/:id/:templateId', getProjectById);

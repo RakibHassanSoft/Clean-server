@@ -16,10 +16,10 @@ router.post('/titles', createTitle);
 router.get('/titles', getAllTitles);
 
 // Get a title entry by ID
-router.get('/titles/:id', getTitleById);
+router.get('/titles/:id/:templateId', getTitleById);
 
 // Update a title entry by ID
-router.put('/titles/:id', updateTitle);
+router.put('/titles/:id/:templateId', updateTitle);
 
 // Delete a title entry by ID
 router.delete('/titles/:id', deleteTitle);

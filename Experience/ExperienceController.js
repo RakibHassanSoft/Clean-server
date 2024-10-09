@@ -2,22 +2,30 @@
 
 // Create a new experience
 exports.createExperience = async (req, res) => {
-    try {
-      const { userId, templateId, experience } = req.body;
-        console.log(req.body);
-      const newExperience = new ExperienceSchema({
-        userId,
-        templateId,
-        experience
-      });
-  
-       await newExperience.save();
-      console.log(newExperience);
-      res.status(201).json(newExperience);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+  try {
+    const { userId, templateId, experience } = req.body;
+
+    // Check if an experience record already exists for the given userId and templateId
+    const existingExperience = await ExperienceSchema.findOne({ userId, templateId });
+
+    if (existingExperience) {
+      return res.status(400).json({ message: 'Experience record already exists for this user and template.' });
     }
-  };
+
+    // Create a new experience record
+    const newExperience = new ExperienceSchema({
+      userId,
+      templateId,
+      experience
+    });
+
+    await newExperience.save();
+    console.log(newExperience);
+    res.status(201).json(newExperience);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
  // Get experience by userId and templateId
 exports.getExperience = async (req, res) => {
