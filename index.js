@@ -13,6 +13,8 @@ const SummaryRoute=require('./Summary/SummaryRoute')
 const TitleRoute=require('./Title/TitleRoute')
 const JobPosting=require('./JobPosting/jobPOstingRoute')
 const certificatesRoutes = require("./Certificates/CertificateRoute")
+const formDataRoutes = require('./FormData/formDataRoutes');
+
 const connectDB=require("./Config/dbConfig")
  
 require("dotenv").config();
@@ -47,19 +49,23 @@ app.use('/api', certificatesRoutes);
 app.use('/api', JobPosting); 
 
 
-
-
-
-
 // Awards 
 app.use("/api", AwardRoute )
 
 
-
 // Summary
 app.use("/api", SummaryRoute);
+
 // title
 app.use("/api", TitleRoute);
+
+
+
+
+
+
+
+app.use("/api", formDataRoutes);
 
 
 // Server listening

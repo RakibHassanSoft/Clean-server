@@ -4,7 +4,7 @@
 exports.createExperience = async (req, res) => {
   try {
     const { userId, templateId, experience } = req.body;
-
+    console.log(req.body)
     // Check if an experience record already exists for the given userId and templateId
     const existingExperience = await ExperienceSchema.findOne({ userId, templateId });
 
