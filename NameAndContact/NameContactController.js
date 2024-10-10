@@ -5,7 +5,7 @@ const NameContact = require('./NameContactSchema');
 exports.createNameContact = async (req, res) => {
   try {
     const { name, contact, userId, templateId } = req.body;
-    console.log(req.body);
+    console.log(contact);
 
     if (!contact || typeof contact !== 'object') {
       return res.status(400).json({ message: 'Contact information must be an object' });
@@ -15,7 +15,7 @@ exports.createNameContact = async (req, res) => {
     const existingContact = await NameContact.findOne({ userId, templateId });
 
     if (existingContact) {
-      return res.status(400).json({ message: 'Contact already exists for this user and template' });
+      return res.status(400).json({ message: 'data already exists for this user and template' });
     }
 
     // Create a new NameContact entry if none exists

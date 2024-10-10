@@ -3,7 +3,7 @@ const JobPosting = require('./jobPostingSchema')
 // Create a new job posting
 exports.createJobPosting = async (req, res) => {
     const {
-      userId, // Now getting userId directly from the request body
+      userId,
       jobTitle,
       company,
       location,
@@ -16,18 +16,12 @@ exports.createJobPosting = async (req, res) => {
       requirements,
       skills,
       applySection,
-      templateId, // Ensure templateId is included in the request body
+      templateId,
     } = req.body;
-  
+
+    console.log('Request Body:', req.body); // Log the request body
+
     try {
-      // Check if a job posting with the same userId and templateId exists
-      const existingJobPosting = await JobPosting.findOne({ userId, templateId });
-      
-      if (existingJobPosting) {
-        return res.status(400).json({ message: 'Job posting already exists for this user and template.' });
-      }
-  
-      // Create a new job posting if it does not exist
       const newJobPosting = new JobPosting({
         userId,
         jobTitle,
@@ -42,15 +36,18 @@ exports.createJobPosting = async (req, res) => {
         requirements,
         skills,
         applySection,
-        templateId // Add templateId to the new job posting
+        templateId
       });
-  
+
       const savedJobPosting = await newJobPosting.save();
+      console.log('Saved Job Posting:', savedJobPosting); // Log the saved posting
       res.status(201).json(savedJobPosting);
     } catch (err) {
-      res.status(500).json({ error: 'Failed to create job posting', message: err.message });
+      console.error(err); // Log the full error
+      res.status(500).json({ error: 'Failed to create job posting', message: err.message, stack: err.stack });
     }
-  };
+};
+
   
   
 // Get all job postings

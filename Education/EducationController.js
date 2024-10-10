@@ -5,7 +5,7 @@ const EducationSchema = require("./EducationSchema");
 exports.CreateEducation = async (req, res) => {
   try {
     const { userId, templateId, education } = req.body;
-
+  console.log(req.body)
     // Check if the record with the same userId and templateId already exists
     const existingEducation = await EducationSchema.findOne({ userId, templateId });
 

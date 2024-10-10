@@ -22,7 +22,7 @@ const jobPostingSchema = new mongoose.Schema({
     required: true
   },
   salaryRange: {
-    type: String, // You can adjust this to Number if you prefer
+    type: String, // Consider changing this to Number if appropriate
     required: true
   },
   remoteOption: {
@@ -40,17 +40,17 @@ const jobPostingSchema = new mongoose.Schema({
   responsibilities: {
     type: [String],
     required: true,
-    default: ['']
+    default: [] // Changed to an empty array
   },
   requirements: {
     type: [String],
     required: true,
-    default: ['']
+    default: [] // Changed to an empty array
   },
   skills: {
     type: [String],
     required: true,
-    default: ['']
+    default: [] // Changed to an empty array
   },
   applySection: {
     callToAction: {
@@ -59,7 +59,7 @@ const jobPostingSchema = new mongoose.Schema({
     },
     applyLinkText: {
       type: String,
-      required: true
+    
     },
     applyLink: {
       type: String,

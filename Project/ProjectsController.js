@@ -3,34 +3,42 @@ const Projects = require("./projectSchema");
 // Create a new project
 exports.createProject = async (req, res) => {
   try {
-    const { title, description, userId, templateId } = req.body;
+      const { userId, templateId, projects } = req.body; // Expecting projects as an array of objects
 
-    // Check if a project already exists for the given userId and templateId
-    let existingProject = await Projects.findOne({ userId, templateId });
+      console.log(userId, templateId, projects); // For debugging
 
-    if (existingProject) {
+      // Check if a project already exists for the given userId and templateId
+      let existingProject = await Projects.findOne({ userId, templateId });
 
-      return res.status(200).json({
-        message: ' existing projects'
-      });
-    } else {
-      // If no project exists, create a new one
-      const newProject = new Projects({
-        projects: [{ title, description }],
-        userId,
-        templateId
-      });
+      if (existingProject) {
+          // If a project already exists, add the new projects to the existing ones
+          existingProject.projects.push(...projects); // Spread the new projects into the existing ones
+          await existingProject.save(); // Save the updated project
 
-      await newProject.save();
-      return res.status(201).json({
-        message: 'New project created successfully',
-        project: newProject
-      });
-    }
+          return res.status(200).json({
+              message: 'Existing projects updated successfully',
+              project: existingProject
+          });
+      } else {
+          // If no project exists, create a new one
+          const newProject = new Projects({
+              userId,
+              templateId,
+              projects: projects // Directly assign the array of projects
+          });
+
+          await newProject.save();
+          return res.status(201).json({
+              message: 'New project created successfully',
+              project: newProject
+          });
+      }
   } catch (error) {
-    res.status(500).json({ message: 'Error creating or updating project', error });
+      console.error('Error creating or updating project:', error); // Improved error logging
+      res.status(500).json({ message: 'Error creating or updating project', error });
   }
 };
+
 
 
 // Get all projects for a specific user and template
